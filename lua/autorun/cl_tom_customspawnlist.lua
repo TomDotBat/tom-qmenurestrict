@@ -1,0 +1,68 @@
+if SERVER then AddCSLuaFile() return end
+
+local tabName = "Props"
+local tabIcon = "icon16/application_view_tile.png"
+local categoryIcon = "icon16/page.png"
+
+hook.Add("PopulateProp1", "AddEntityContent", function(contentPanel, tree, node)
+    node = tree:AddNode("Construction Props", categoryIcon)
+
+    node.DoPopulate = function(self)
+        if (self.PropPanel) then return end
+        self.PropPanel = vgui.Create("ContentContainer", contentPanel)
+        self.PropPanel:SetVisible(false)
+        self.PropPanel:SetTriggerSpawnlistChange(false)
+
+        local props = {"models/props_borealis/borealis_door001a.mdl", "models/props_borealis/bluebarrel001.mdl", "models/props_c17/canister_propane01a.mdl", "models/props_c17/concrete_barrier001a.mdl", "models/props_c17/display_cooler01a.mdl", "models/props_c17/door01_left.mdl", "models/props_c17/door02_double.mdl", "models/props_c17/FurnitureBed001a.mdl", "models/props_c17/FurnitureCupboard001a.mdl", "models/props_c17/FurnitureDrawer001a.mdl", "models/props_c17/FurnitureDrawer001a_Chunk01.mdl", "models/props_c17/FurnitureDrawer001a_Chunk02.mdl", "models/props_c17/FurnitureDrawer001a_Chunk03.mdl", "models/props_c17/FurnitureDrawer001a_Chunk05.mdl", "models/props_c17/FurnitureDrawer001a_Chunk06.mdl", "models/props_c17/FurnitureDrawer003a.mdl", "models/props_c17/FurnitureDresser001a.mdl", "models/props_c17/FurnitureFireplace001a.mdl", "models/props_c17/FurnitureRadiator001a.mdl", "models/props_c17/FurnitureShelf001a.mdl", "models/props_c17/FurnitureSink001a.mdl", "models/props_c17/furnitureStove001a.mdl", "models/props_c17/FurnitureToilet001a.mdl", "models/props_c17/FurnitureWashingmachine001a.mdl", "models/props_c17/gravestone001a.mdl", "models/props_c17/gravestone002a.mdl", "models/props_c17/gravestone003a.mdl", "models/props_c17/gravestone004a.mdl", "models/props_c17/gravestone_coffinpiece001a.mdl", "models/props_c17/gravestone_coffinpiece002a.mdl", "models/props_c17/gravestone_cross001a.mdl", "models/props_junk/PlasticCrate01a.mdl", "models/props_c17/gravestone_cross001b.mdl", "models/props_c17/gravestone_statue001a.mdl", "models/props_c17/lampShade001a.mdl", "models/props_c17/Lockers001a.mdl", "models/props_c17/metalladder001.mdl", "models/props_c17/metalladder002.mdl", "models/props_c17/oildrum001.mdl", "models/props_c17/pulleyhook01.mdl", "models/props_c17/pulleywheels_large01.mdl", "models/props_c17/shelfunit01a.mdl", "models/props_c17/signpole001.mdl", "models/props_canal/canal_cap001.mdl", "models/props_combine/breenglobe.mdl", "models/props_combine/combine_barricade_short02a.mdl", "models/props_debris/metal_panel01a.mdl", "models/props_docks/channelmarker_gib02.mdl", "models/props_docks/channelmarker_gib03.mdl", "models/props_docks/channelmarker_gib04.mdl", "models/props_docks/dock01_cleat01a.mdl", "models/props_docks/dock01_pole01a_128.mdl", "models/props_docks/dock01_pole01a_256.mdl", "models/props_docks/dock02_pole02a_256.mdl", "models/props_docks/dock03_pole01a_256.mdl", "models/props_doors/door03_slotted_left.mdl", "models/props_interiors/Furniture_Lamp01a.mdl", "models/props_interiors/Furniture_shelf01a.mdl", "models/props_interiors/Furniture_Vanity01a.mdl", "models/props_interiors/pot01a.mdl", "models/props_interiors/pot02a.mdl", "models/props_interiors/refrigerator01a.mdl", "models/props_interiors/refrigeratorDoor01a.mdl", "models/props_interiors/refrigeratorDoor02a.mdl", "models/props_interiors/SinkKitchen01a.mdl", "models/props_interiors/VendingMachineSoda01a.mdl", "models/props_interiors/VendingMachineSoda01a_door.mdl", "models/props_junk/cardboard_box001a.mdl", "models/props_junk/cardboard_box001b.mdl", "models/props_junk/cardboard_box002a.mdl", "models/props_junk/cardboard_box002b.mdl", "models/props_junk/cardboard_box003a.mdl", "models/props_junk/cardboard_box003b.mdl", "models/props_junk/cardboard_box004a.mdl", "models/props_junk/CinderBlock01a.mdl", "models/props_junk/harpoon002a.mdl", "models/props_junk/iBeam01a.mdl", "models/props_junk/meathook001a.mdl", "models/props_junk/metal_paintcan001a.mdl", "models/props_junk/MetalBucket01a.mdl", "models/props_junk/MetalBucket02a.mdl", "models/props_junk/PopCan01a.mdl", "models/props_junk/PushCart01a.mdl", "models/props_junk/ravenholmsign.mdl", "models/props_junk/sawblade001a.mdl", "models/props_junk/TrashBin01a.mdl", "models/props_junk/TrafficCone001a.mdl", "models/props_junk/TrashDumpster02b.mdl", "models/props_junk/TrashDumpster01a.mdl", "models/props_junk/wood_crate001a.mdl", "models/props_junk/wood_crate001a_damaged.mdl", "models/props_junk/wood_crate002a.mdl", "models/props_junk/wood_pallet001a.mdl", "models/props_lab/blastdoor001a.mdl", "models/props_lab/blastdoor001b.mdl", "models/props_lab/blastdoor001c.mdl", "models/props_lab/filecabinet02.mdl", "models/props_lab/kennel_physics.mdl", "models/props_lab/lockerdoorleft.mdl", "models/props_trainstation/Ceiling_Arch001a.mdl", "models/props_trainstation/clock01.mdl", "models/props_trainstation/Column_Arch001a.mdl", "models/props_trainstation/TrackSign01.mdl", "models/props_trainstation/TrackSign02.mdl", "models/props_trainstation/TrackSign03.mdl", "models/props_trainstation/TrackSign07.mdl", "models/props_trainstation/TrackSign08.mdl", "models/props_trainstation/TrackSign09.mdl", "models/props_trainstation/TrackSign10.mdl", "models/props_trainstation/traincar_rack001.mdl", "models/props_trainstation/trainstation_arch001.mdl", "models/props_trainstation/trainstation_clock001.mdl", "models/props_trainstation/trainstation_column001.mdl", "models/props_trainstation/trainstation_ornament001.mdl", "models/props_trainstation/trainstation_ornament002.mdl", "models/props_trainstation/trainstation_post001.mdl", "models/props_trainstation/trashcan_indoor001a.mdl", "models/props_trainstation/trashcan_indoor001b.mdl", "models/props_vehicles/tire001a_tractor.mdl", "models/props_vehicles/tire001b_truck.mdl", "models/props_vehicles/tire001c_car.mdl", "models/props_vehicles/apc_tire001.mdl", "models/props_wasteland/barricade001a.mdl", "models/props_wasteland/barricade002a.mdl", "models/props_wasteland/controlroom_filecabinet001a.mdl", "models/props_wasteland/controlroom_filecabinet002a.mdl", "models/props_wasteland/controlroom_storagecloset001a.mdl", "models/props_wasteland/controlroom_storagecloset001b.mdl", "models/props_wasteland/dockplank01b.mdl", "models/props_wasteland/kitchen_shelf002a.mdl", "models/props_wasteland/kitchen_shelf001a.mdl", "models/props_wasteland/kitchen_fridge001a.mdl", "models/props_wasteland/kitchen_stove001a.mdl", "models/props_wasteland/kitchen_stove002a.mdl", "models/props_wasteland/laundry_basket001.mdl", "models/props_wasteland/laundry_cart001.mdl", "models/props_wasteland/laundry_cart002.mdl", "models/props_wasteland/laundry_washer001a.mdl", "models/props_wasteland/laundry_washer003.mdl", "models/props_wasteland/light_spotlight01_lamp.mdl", "models/props_wasteland/medbridge_post01.mdl", "models/props_wasteland/prison_bedframe001b.mdl", "models/props_wasteland/prison_celldoor001b.mdl", "models/props_wasteland/prison_heater001a.mdl", "models/props_wasteland/prison_lamp001c.mdl", "models/props_wasteland/prison_shelf002a.mdl", "models/props_wasteland/wheel01.mdl", "models/props_wasteland/wheel01a.mdl", "models/props_wasteland/wood_fence01a.mdl", "models/props_wasteland/wood_fence02a.mdl"}
+
+        for k, v in ipairs(props) do
+            spawnmenu.CreateContentIcon("model", self.PropPanel, {
+                model = v
+            })
+        end
+    end
+
+    node.DoClick = function(self)
+        self:DoPopulate()
+        contentPanel:SwitchPanel(self.PropPanel)
+    end
+
+    local FirstNode = tree:Root():GetChildNode(0)
+
+    if (IsValid(FirstNode)) then
+        FirstNode:InternalDoClick()
+    end
+end)
+
+hook.Add("PopulateProp2", "AddEntityContent", function(contentPanel, tree, node)
+    node = tree:AddNode("Comic Props", categoryIcon)
+
+    node.DoPopulate = function(self)
+        if (self.PropPanel) then return end
+        self.PropPanel = vgui.Create("ContentContainer", contentPanel)
+        self.PropPanel:SetVisible(false)
+        self.PropPanel:SetTriggerSpawnlistChange(false)
+
+        local props = {"models/Gibs/HGIBS.mdl", "models/Gibs/HGIBS_rib.mdl", "models/Gibs/HGIBS_spine.mdl", "models/props_c17/BriefCase001a.mdl", "models/props_c17/cashregister01a.mdl", "models/props_c17/clock01.mdl", "models/props_c17/computer01_keyboard.mdl", "models/props_c17/consolebox03a.mdl", "models/props_c17/consolebox05a.mdl", "models/props_c17/doll01.mdl", "models/props_c17/Frame002a.mdl", "models/props_c17/lamp001a.mdl", "models/props_c17/metalPot001a.mdl", "models/props_c17/metalPot002a.mdl", "models/props_c17/playground_carousel01.mdl", "models/props_c17/playground_jungle_gym01a.mdl", "models/props_c17/playground_jungle_gym01b.mdl", "models/props_c17/playground_swingset01.mdl", "models/props_c17/playground_swingset_seat01a.mdl", "models/props_c17/playground_teetertoter_seat.mdl", "models/props_c17/playground_teetertoter_stan.mdl", "models/props_c17/playgroundslide01.mdl", "models/props_c17/playgroundTick-tack-toe_block01a.mdl", "models/props_c17/playgroundTick-tack-toe_post01.mdl", "models/props_c17/streetsign001c.mdl", "models/props_c17/streetsign002b.mdl", "models/props_c17/streetsign003b.mdl", "models/props_c17/streetsign004e.mdl", "models/props_c17/streetsign004f.mdl", "models/props_c17/streetsign005b.mdl", "models/props_c17/streetsign005c.mdl", "models/props_c17/streetsign005d.mdl", "models/props_c17/SuitCase001a.mdl", "models/props_c17/tools_wrench01a.mdl", "models/props_c17/tv_monitor01.mdl", "models/props_canal/mattpipe.mdl", "models/props_combine/breenclock.mdl", "models/props_combine/combine_intmonitor001.mdl", "models/props_combine/combine_interface001.mdl", "models/props_combine/combine_monitorbay.mdl", "models/props_combine/health_charger001.mdl", "models/props_combine/suit_charger001.mdl", "models/props_doors/door03_slotted_left.mdl", "models/props_interiors/Furniture_Lamp01a.mdl", "models/props_interiors/pot01a.mdl", "models/props_interiors/pot02a.mdl", "models/props_junk/bicycle01a.mdl", "models/props_junk/garbage128_composite001a.mdl", "models/props_junk/garbage128_composite001b.mdl", "models/props_junk/garbage128_composite001c.mdl", "models/props_junk/garbage128_composite001d.mdl", "models/props_junk/garbage256_composite001a.mdl", "models/props_junk/garbage256_composite001b.mdl", "models/props_junk/garbage256_composite002a.mdl", "models/props_junk/garbage256_composite002b.mdl", "models/props_junk/garbage_bag001a.mdl", "models/props_junk/garbage_carboard002a.mdl", "models/props_junk/garbage_metalcan001a.mdl", "models/props_junk/garbage_metalcan002a.mdl", "models/props_junk/garbage_milkcarton001a.mdl", "models/props_junk/garbage_newspaper001a.mdl", "models/props_junk/garbage_plasticbottle001a.mdl", "models/props_junk/garbage_plasticbottle002a.mdl", "models/props_junk/garbage_plasticbottle003a.mdl", "models/props_junk/harpoon002a.mdl", "models/props_junk/meathook001a.mdl", "models/props_junk/metal_paintcan001a.mdl", "models/props_junk/metal_paintcan001b.mdl", "models/props_junk/MetalBucket01a.mdl", "models/props_junk/MetalBucket02a.mdl", "models/props_junk/PopCan01a.mdl", "models/props_junk/sawblade001a.mdl", "models/props_junk/Shoe001a.mdl", "models/props_junk/Shovel01a.mdl", "models/props_junk/terracotta01.mdl", "models/props_junk/TrashBin01a.mdl", "models/props_junk/TrafficCone001a.mdl", "models/props_junk/Wheebarrow01a.mdl", "models/props_lab/bewaredog.mdl", "models/props_lab/binderblue.mdl", "models/props_lab/binderbluelabel.mdl", "models/props_lab/bindergraylabel01a.mdl", "models/props_lab/bindergreen.mdl", "models/props_lab/bindergraylabel01b.mdl", "models/props_lab/bindergreenlabel.mdl", "models/props_lab/binderredlabel.mdl", "models/props_lab/cactus.mdl", "models/props_lab/citizenradio.mdl", "models/props_lab/clipboard.mdl", "models/props_lab/crematorcase.mdl", "models/props_lab/desklamp01.mdl", "models/props_lab/frame002a.mdl", "models/props_lab/harddrive02.mdl", "models/props_lab/harddrive01.mdl", "models/props_lab/huladoll.mdl", "models/props_lab/jar01a.mdl", "models/props_lab/jar01b.mdl", "models/props_lab/kennel_physics.mdl", "models/props_lab/monitor01a.mdl", "models/props_lab/monitor01b.mdl", "models/props_lab/monitor02.mdl", "models/props_lab/partsbin01.mdl", "models/props_lab/plotter.mdl", "models/props_lab/reciever01a.mdl", "models/props_lab/reciever01b.mdl", "models/props_lab/reciever01c.mdl", "models/props_lab/reciever_cart.mdl", "models/props_lab/securitybank.mdl", "models/props_lab/servers.mdl", "models/props_lab/tpplug.mdl", "models/props_lab/tpplugholder_single.mdl", "models/props_lab/tpplugholder.mdl", "models/props_lab/workspace001.mdl", "models/props_lab/workspace002.mdl", "models/props_lab/workspace003.mdl", "models/props_lab/workspace004.mdl", "models/props_trainstation/payphone001a.mdl", "models/props_trainstation/payphone_reciever001a.mdl", "models/props_trainstation/trainstation_clock001.mdl", "models/props_vehicles/carparts_axel01a.mdl", "models/props_vehicles/carparts_door01a.mdl", "models/props_vehicles/carparts_muffler01a.mdl", "models/props_vehicles/carparts_tire01a.mdl", "models/props_vehicles/carparts_wheel01a.mdl"}
+
+        for k, v in ipairs(props) do
+            spawnmenu.CreateContentIcon("model", self.PropPanel, {
+                model = v
+            })
+        end
+    end
+
+    node.DoClick = function(self)
+        self:DoPopulate()
+        contentPanel:SwitchPanel(self.PropPanel)
+    end
+end)
+
+spawnmenu.AddCreationTab(tabName, function()
+    local ctrl = vgui.Create("SpawnmenuContentPanel")
+
+    ctrl:CallPopulateHook("PopulateProp1")
+    ctrl:CallPopulateHook("PopulateProp2")
+
+    return ctrl
+end, tabIcon, 20)
